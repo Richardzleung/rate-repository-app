@@ -7,7 +7,11 @@ import FormikTextInput from './FormikTextInput';
 const styles = StyleSheet.create({
   signIn: {
     backgroundColor: 'white',
-  }
+    paddingLeft: '15%',
+    paddingRight: '15%',
+    paddingTop: 10,
+    paddingBottom: 10,
+  },
 });
 
 const initialValues = {

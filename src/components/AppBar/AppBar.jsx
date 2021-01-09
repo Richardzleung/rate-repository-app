@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 export const AppBar = () => {
   return (
   <View style={styles.container}>
-    <ScrollView horizontal contentContainerStyle={styles.scrollView}>
+    <ScrollView horizontal contentContainerStyle={styles.scrollView} >
       <Link to='/' style={{width: 88}} component={TouchableHighlight}>
         <Text style={styles.text}>Repositories</Text>  
       </Link>
