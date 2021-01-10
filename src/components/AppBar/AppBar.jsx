@@ -14,8 +14,8 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     marginHorizontal: 20,
-    paddingTop: 50,
-    paddingBottom: 20
+    marginTop: 19,
+    paddingBottom: 5,
   },
   text: {
     color: theme.appBar.text,
