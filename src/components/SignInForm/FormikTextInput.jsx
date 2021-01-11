@@ -6,15 +6,22 @@ import TextInput from './TextInput';
 import Text from '../Text';
 
 const styles = StyleSheet.create({
+  errorView: {
+    flexBasis: 30,
+    borderWidth: 2,
+    borderColor: 'red',
+    borderRadius: 3.6,
+  },
   errorText: {
     marginTop: 5,
+    color:'red',
   },
   entryBoxes: {
     flexBasis: 30,
-    marginTop: 12,
     borderWidth: 2,
     borderColor: 'grey',
-    borderRadius: 3.6
+    borderRadius: 3.6,
+    //marginBottom: 12
   }
 });
 
@@ -24,15 +31,26 @@ const FormikTextInput = ({ name, ...props }) => {
 
   return (
     <>
-      <TextInput
+      {!showError && 
+        <TextInput
+          onChangeText={value => helpers.setValue(value)}
+          onBlur={() => helpers.setTouched(true)}
+          value={field.value}
+          error={showError}
+          style={styles.entryBoxes}
+          {...props}
+        />
+      }
+      {
+        <TextInput
         onChangeText={value => helpers.setValue(value)}
         onBlur={() => helpers.setTouched(true)}
         value={field.value}
         error={showError}
-        style={styles.entryBoxes}
+        style={styles.errorView}
         {...props}
-      />
-      {showError && <Text style={styles.errorText}>{meta.error}</Text>}
+        /> &&
+        <Text style={styles.errorText}>{meta.error}</Text>}
     </>
   );
 };
