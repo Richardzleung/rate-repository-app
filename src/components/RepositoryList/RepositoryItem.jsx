@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Image, StyleSheet, } from 'react-native';
+import { View, Image, StyleSheet, Button } from 'react-native';
+import * as Linking from 'expo-linking';
 
 import Text from '../Text';
 import FooterElement from './ReposItemFooter';
@@ -54,29 +55,43 @@ const SelectImage = ({ name }) => {
   );
 };
 
-const RepositoryItem = ({ item })  => (
-  <View style={styles.flexContainer}>
+const RepositoryItemContainer = ({ item, displayButton, url })  => {
+  const {
+    description,
+    language,
+    ownerName,
+    name,
+    forksCount,
+    ratingAverage,
+    fullName =  fullName ? fullName : `${ownerName}/${name}`,
+    reviewCount,
+    stargazersCount,
+  } = item;
 
-    <View style={{ flexDirection: 'row'}}>
-      <SelectImage name={item.fullName} />
-      <View style={{marginLeft: 10}}>
-          <Text fontWeight='bold'>{item.fullName}</Text>
-          <Text color='textSecondary'>{item.description}</Text>
+  return (
+    <View style={styles.flexContainer}>
+      <View style={{ flexDirection: 'row'}}>
+        <SelectImage name={`${ownerName}/${name}`} />
+        <View style={{marginLeft: 10}}>
+            <Text testID='full-name' fontWeight='bold'> {fullName} </Text>
+            <Text testID='description' color='textSecondary'>{description}</Text>
 
-          <View style={styles.languageTagView}>
-            <Text languageTag='true'>{item.language}</Text>
-          </View>
+            <View style={styles.languageTagView}>
+              <Text testID='language' languageTag='true'>{language}</Text>
+            </View>
+        </View>
       </View>
+
+      <View testID='footer' style={styles.footerBar}>
+        <FooterElement testID='stars' label='Stars' value={stargazersCount} />
+        <FooterElement testID='forks' label='Forks' value={forksCount} />
+        <FooterElement testID='reviews' label='Reviews' value={reviewCount} />
+        <FooterElement testID='ratings' label='Ratings' value={ratingAverage} />
+      </View>
+
+      { displayButton && <Button title='Open in Github' onPress={() => Linking.openURL(url)}/> }
     </View>
+  );
+};
 
-    <View style={styles.footerBar}>
-      <FooterElement label='Stars' value={item.stargazersCount} />
-      <FooterElement label='Forks' value={item.forksCount} />
-      <FooterElement label='Reviews' value={item.reviewCount} />
-      <FooterElement label='Ratings' value={item.ratingAverage} />
-    </View>
-
-  </View>
-);
-
-export default RepositoryItem;
+export default RepositoryItemContainer;
