@@ -28,18 +28,9 @@ const styles = StyleSheet.create({
   backroundColor: {
     backgroundColor: theme.colors.primary,
   },
-  languageTag: {
-    backgroundColor: theme.colors.primary,
-    borderRadius: 3.6,
-    color: theme.colors.white,
-    paddingTop: 2,
-    paddingBottom: 2,
-    paddingLeft: 3,
-    paddingRight: 3
-  },
 }); 
 
-const Text = ({ color, fontSize, fontWeight, style, backgroundColor, languageTag,  ...props }) => {
+const Text = ({ color, fontSize, fontWeight, style, backgroundColor, ...props }) => {
   const textStyle = [
     styles.text,
     color === 'textSecondary' && styles.colorTextSecondary,
@@ -48,7 +39,6 @@ const Text = ({ color, fontSize, fontWeight, style, backgroundColor, languageTag
     fontSize === 'subheading' && styles.fontSizeSubheading,
     fontWeight === 'bold' && styles.fontWeightBold,
     backgroundColor === 'primary' && styles.backroundColor,
-    languageTag === 'true' && styles.languageTag,
     style,
   ];
 

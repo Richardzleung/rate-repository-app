@@ -1,27 +1,39 @@
 import React from 'react';
 import { View, Image, StyleSheet, Button } from 'react-native';
 import * as Linking from 'expo-linking';
+import { useQuery } from '@apollo/react-hooks';
+import { useParams } from 'react-router-native';
 
 import Text from '../Text';
+import theme from '../../theme';
 import FooterElement from './ReposItemFooter';
 
-import Jerry from '@images/Jerry.webp';
-import Django from '@images/django.png';
-import Redux from '@images/redux-283024.png';
-import Rails from '@images/tech_rubyonrails.png';
+import { GET_ONE_REPOSITORY } from '../../graphql/queries';
 
 const styles = StyleSheet.create({
+  flexContainer: {
+    backgroundColor: 'white',
+    padding: 25,
+  },
+  avatarContainer: {
+    flexGrow: 0,
+    marginLeft: 5
+  },
   tinyLogo: {
     width: 50,
     height: 50,
     borderRadius: 4.5
   },
-  flexContainer: {
-    display: 'flex',
-    paddingTop: 25,
-  },
   languageTagView: {
-    alignItems: 'baseline',
+    flexDirection: 'row',
+    marginTop: 10,
+  },
+  languageText: {
+    backgroundColor: theme.colors.primary,
+    borderRadius: theme.roundness,
+    color: theme.colors.white,
+    paddingVertical: 3,
+    paddingHorizontal: 6
   },
   footerBar: {
     flexDirection: 'row',
@@ -29,33 +41,23 @@ const styles = StyleSheet.create({
   },
 });
 
-const SelectImage = ({ name }) => {
-  let image = null;
-  switch (name) {
-    case 'jaredpalmer/formik':
-      image = Jerry;
-      break;
-    case 'rails/rails':
-      image = Rails;
-      break;
-    case 'django/django':
-      image = Django;
-      break;
-    case 'reduxjs/redux':
-      image = Redux;
-      break;
-    default:
-      return null;
-  }
-  return (
-    <Image 
-      style={styles.tinyLogo}
-      source={image}
-    />
-  );
+
+export const OneRepository = () => {
+  const { id } = useParams();
+  console.log({ id });
+  const { data, loading, error } = useQuery(GET_ONE_REPOSITORY, {
+    variables: { id }
+  });
+
+  if (loading) return null;  
+
+  console.log({data, loading, url, error});
+  const url = id ? data.repository.url : undefined;
+
+  return <RepositoryItem displayButton={id !== undefined} item={data.repository}/>;
 };
 
-const RepositoryItemContainer = ({ item, displayButton, url })  => {
+const RepositoryItem = ({ item, displayButton })  => {
   const {
     description,
     language,
@@ -66,18 +68,23 @@ const RepositoryItemContainer = ({ item, displayButton, url })  => {
     fullName =  fullName ? fullName : `${ownerName}/${name}`,
     reviewCount,
     stargazersCount,
+    url,
+    ownerAvatarUrl
   } = item;
 
   return (
     <View style={styles.flexContainer}>
       <View style={{ flexDirection: 'row'}}>
-        <SelectImage name={`${ownerName}/${name}`} />
+        <View style={styles.avatarContainer}>
+          <Image source={{ uri: ownerAvatarUrl }} style={styles.tinyLogo} />
+        </View>
+        
         <View style={{marginLeft: 10}}>
             <Text testID='full-name' fontWeight='bold'> {fullName} </Text>
             <Text testID='description' color='textSecondary'>{description}</Text>
 
             <View style={styles.languageTagView}>
-              <Text testID='language' languageTag='true'>{language}</Text>
+              <Text testID='language' style={styles.languageText}>{language}</Text>
             </View>
         </View>
       </View>
@@ -94,4 +101,4 @@ const RepositoryItemContainer = ({ item, displayButton, url })  => {
   );
 };
 
-export default RepositoryItemContainer;
+export default RepositoryItem;

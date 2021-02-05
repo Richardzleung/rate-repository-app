@@ -9,7 +9,7 @@ import { useApolloClient } from '@apollo/react-hooks';
 import theme from '../theme';
 import Text from './Text';
 import { LOGIN } from '../graphql/queries';
-import AuthStorageContext from './../contexts/AuthStorageContext';
+import AuthStorageContext from '../contexts/AuthStorageContext';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,8 +25,8 @@ const styles = StyleSheet.create({
     flexGrow: 0,
   },
   tabContainer: {
-    paddingHorizontal: 15,
-    paddingVertical: 20,
+    paddingHorizontal: 5,
+    paddingVertical: 10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -65,7 +65,7 @@ const AppBar = () => {
   return (
   <View style={styles.container}>
     <ScrollView style={styles.scrollView} horizontal>
-        <Link to="/" component={AppBarTab}>Repositories</Link>
+        <Link to="/" component={AppBarTab}> Repositories</Link>
         { authorizedUser ?
           <AppBarTab onPress={onSignOut}>Sign out</AppBarTab> :
           <Link to="/sign-in" component={AppBarTab}>Sign in</Link>  

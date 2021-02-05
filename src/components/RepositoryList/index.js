@@ -1,11 +1,10 @@
 import React from 'react';
 import { FlatList, View, StyleSheet, TouchableHighlight } from 'react-native';
-import { useHistory, useParams } from 'react-router-native';
-import { useQuery } from '@apollo/react-hooks';
+import { useHistory } from 'react-router-native';
 
 import RepositoryItem from './RepositoryItem';
 import useRepositories from '../../hooks/useRepositories';
-import { GET_ONE_REPOSITORY } from './../../graphql/queries';
+export { OneRepository } from './RepositoryItem';
 
 const styles = StyleSheet.create({
   container: {
@@ -17,8 +16,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export const RepositoryListContainer = ({ repositories, displayButton, url }) => {
-  const history= useHistory();
+export const RepositoryListContainer = ({ repositories }) => {
+  const history = useHistory();
   const repositoryNodes = repositories
     ? repositories.edges.map(edge => edge.node)
     : [];
@@ -34,7 +33,7 @@ export const RepositoryListContainer = ({ repositories, displayButton, url }) =>
       testID='flat-list'
       renderItem={({item}) => (
         <TouchableHighlight onPress={() => history.push(`/${item.id}`)}>
-          <RepositoryItem displayButton={displayButton} url={url} item={item} />
+          <RepositoryItem item={item} />
         </TouchableHighlight>
       )}
     />
@@ -43,20 +42,8 @@ export const RepositoryListContainer = ({ repositories, displayButton, url }) =>
 
 const RepositoryList = () => {
   const { repositories } = useRepositories();
-  const { id } = useParams();
-  const { data, loading, error } = useQuery(GET_ONE_REPOSITORY, {
-    variables: { id },
-    errorPolicy: 'ignore'
-  });
-  const url = data ? data.repository.url : undefined;
 
-  if (loading) return 'loading';
-  console.log({data, loading, error, url});
-  return <RepositoryListContainer 
-    displayButton={id !== undefined} 
-    url={url}
-    repositories={repositories} 
-  />;
+  return <RepositoryListContainer repositories={repositories} />;
 };
 
 export default RepositoryList;
