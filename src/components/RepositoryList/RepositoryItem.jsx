@@ -1,19 +1,16 @@
 import React from 'react';
 import { View, Image, StyleSheet, Button } from 'react-native';
 import * as Linking from 'expo-linking';
-import { useQuery } from '@apollo/react-hooks';
-import { useParams } from 'react-router-native';
 
 import Text from '../Text';
 import theme from '../../theme';
 import FooterElement from './ReposItemFooter';
 
-import { GET_ONE_REPOSITORY } from '../../graphql/queries';
-
 const styles = StyleSheet.create({
   flexContainer: {
     backgroundColor: 'white',
     padding: 25,
+    marginBottom: 10
   },
   avatarContainer: {
     flexGrow: 0,
@@ -31,6 +28,8 @@ const styles = StyleSheet.create({
   languageText: {
     backgroundColor: theme.colors.primary,
     borderRadius: theme.roundness,
+    borderWidth: 1,
+    borderColor: theme.colors.primary,
     color: theme.colors.white,
     paddingVertical: 3,
     paddingHorizontal: 6
@@ -40,22 +39,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
   },
 });
-
-
-export const OneRepository = () => {
-  const { id } = useParams();
-  console.log({ id });
-  const { data, loading, error } = useQuery(GET_ONE_REPOSITORY, {
-    variables: { id }
-  });
-
-  if (loading) return null;  
-
-  console.log({data, loading, url, error});
-  const url = id ? data.repository.url : undefined;
-
-  return <RepositoryItem displayButton={id !== undefined} item={data.repository}/>;
-};
 
 const RepositoryItem = ({ item, displayButton })  => {
   const {

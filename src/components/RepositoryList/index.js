@@ -4,12 +4,10 @@ import { useHistory } from 'react-router-native';
 
 import RepositoryItem from './RepositoryItem';
 import useRepositories from '../../hooks/useRepositories';
-export { OneRepository } from './RepositoryItem';
 
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
-    
   },
   separator: {
     height: 10,

@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: 'grey',
     borderRadius: 3.6,
-    paddingLeft: 4
+    paddingLeft: 4,
     //marginBottom: 12
   },
   errorEntryBox: {

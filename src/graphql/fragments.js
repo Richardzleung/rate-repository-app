@@ -4,7 +4,6 @@ export const REPOSITORY_BASE_FIELDS = gql`
   fragment RepositoryBaseFields on Repository {
     id
     name
-    ownerName
     fullName
     stargazersCount
     forksCount
@@ -12,6 +11,6 @@ export const REPOSITORY_BASE_FIELDS = gql`
     ownerAvatarUrl
     description
     language
-    createdAt
   }
 `;
+
