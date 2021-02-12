@@ -3,16 +3,16 @@ import { gql } from 'apollo-boost';
 import { REPOSITORY_BASE_FIELDS } from './fragments';
 
 export const GET_REPOSITORIES = gql`
-  query {
-  repositories {
-    edges {
-      node {
-        ...RepositoryBaseFields
-        ratingAverage
-        reviewCount
+  query getRepositories($orderDirection: OrderDirection $orderBy: AllRepositoriesOrderBy){
+    repositories(orderDirection: $orderDirection, orderBy: $orderBy) {
+      edges {
+        node {
+          ...RepositoryBaseFields
+          ratingAverage
+          reviewCount
+        }
       }
     }
-  }
 }
 
 ${REPOSITORY_BASE_FIELDS}

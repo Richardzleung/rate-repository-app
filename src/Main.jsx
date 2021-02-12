@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Route, Switch, Redirect } from 'react-router-native';
 
@@ -8,6 +8,7 @@ import SingleRepository from './components/SingleRepository';
 import SignIn from './components/SignInForm';
 import ReviewForm from './components/ReviewForm';
 import SignUpForm from './components/SignupForm';
+import useRepositories from './hooks/useRepositories';
  
 const styles = StyleSheet.create({ 
   container: {
@@ -17,9 +18,18 @@ const styles = StyleSheet.create({
 });
 
 const Main = () => {
+  const [repositories, setRepositories] = useState(undefined);
+  const { repositories: initialRepos } = useRepositories({ orderBy: undefined , orderDirection: undefined });
+  
+  console.log({initialRepos});
+  if (repositories === undefined && initialRepos !== undefined) {
+    setRepositories(initialRepos);
+  }
+
+  console.log('main',{repositories});
   return (
     <View style={styles.container}>
-      <AppBar />
+      <AppBar setRepositories={setRepositories}/>
       <Switch>
         <Route path="/sign-in">
           <SignIn />
@@ -34,7 +44,7 @@ const Main = () => {
           <SingleRepository />
         </Route>
         <Route path="/" exact>
-          <RepositoryList />
+          <RepositoryList repositories={repositories} />
         </Route>
         <Redirect to="/" />
       </Switch>

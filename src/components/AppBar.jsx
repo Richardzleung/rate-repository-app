@@ -10,6 +10,7 @@ import theme from '../theme';
 import Text from './Text';
 import { LOGIN } from '../graphql/queries';
 import AuthStorageContext from '../contexts/AuthStorageContext';
+import FilterRepositoryMenu from './FilterMenu';
 
 const styles = StyleSheet.create({
   container: {
@@ -28,8 +29,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     paddingVertical: 10,
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignSelf: 'flex-end',
+    alignItems: 'flex-end',
+    //justifyContent: 'center',
+  },
+  sortContainer: {
+    alignItems: 'flex-end',
   },
   tabText: {
     color: 'white',
@@ -48,7 +53,7 @@ const AppBarTab = ({ children, ...props }) => {
   );
 };
 
-const AppBar = () => {
+const AppBar = ({setRepositories}) => {
   const apolloClient = useApolloClient();
   const authStorage = useContext(AuthStorageContext);
   const history = useHistory();
@@ -76,7 +81,11 @@ const AppBar = () => {
               <Link to="/sign-up" component={AppBarTab}>Sign Up</Link>
             </>   
         }
+        
     </ScrollView>
+      <View style={styles.sortContainer}>
+        <FilterRepositoryMenu setRepositories={setRepositories}/>
+      </View>
   </View>
   );
 };
