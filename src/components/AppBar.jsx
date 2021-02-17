@@ -8,9 +8,8 @@ import { useApolloClient } from '@apollo/react-hooks';
 
 import theme from '../theme';
 import Text from './Text';
-import { LOGIN } from '../graphql/queries';
+import { GET_AUTHORIZED_USER } from '../graphql/queries';
 import AuthStorageContext from '../contexts/AuthStorageContext';
-import FilterRepositoryMenu from './FilterMenu';
 
 const styles = StyleSheet.create({
   container: {
@@ -18,9 +17,10 @@ const styles = StyleSheet.create({
     backgroundColor: theme.appBar.backround,
     opacity: 60,
     flexBasis: 90,
+    flex: 1,
   },
   scrollView: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   tabTouchable: {
     flexGrow: 0,
@@ -32,9 +32,6 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     alignItems: 'flex-end',
     //justifyContent: 'center',
-  },
-  sortContainer: {
-    alignItems: 'flex-end',
   },
   tabText: {
     color: 'white',
@@ -53,12 +50,12 @@ const AppBarTab = ({ children, ...props }) => {
   );
 };
 
-const AppBar = ({setRepositories}) => {
+const AppBar = () => {
   const apolloClient = useApolloClient();
   const authStorage = useContext(AuthStorageContext);
   const history = useHistory();
 
-  const { data } = useQuery(LOGIN);
+  const { data } = useQuery(GET_AUTHORIZED_USER);
   const authorizedUser = data ? data.authorizedUser : undefined;
 
   const onSignOut = async () => {
@@ -74,18 +71,15 @@ const AppBar = ({setRepositories}) => {
         { authorizedUser
           ? <>
               <Link to="add-review" component={AppBarTab}> Create a review </Link>
+              <Link to="my-review" component={AppBarTab}> My Reviews</Link> 
               <AppBarTab onPress={onSignOut}>Sign out</AppBarTab> 
             </>
           : <>
               <Link to="/sign-in" component={AppBarTab}>Sign in</Link>  
               <Link to="/sign-up" component={AppBarTab}>Sign Up</Link>
-            </>   
-        }
-        
-    </ScrollView>
-      <View style={styles.sortContainer}>
-        <FilterRepositoryMenu setRepositories={setRepositories}/>
-      </View>
+            </>  
+        }    
+    </ScrollView>    
   </View>
   );
 };

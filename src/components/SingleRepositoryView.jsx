@@ -1,10 +1,9 @@
 import React from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
-import { useQuery } from '@apollo/react-hooks';
 import { useParams } from 'react-router-native';
 import { format } from 'date-fns';
 
-import { GET_ONE_REPOSITORY } from '../graphql/queries';
+import useRepository from '../hooks/useRepository';
 import RepositoryItem from './RepositoryList/RepositoryItem';
 import Text from './Text';
 import Subheading from './Subheading';
@@ -36,19 +35,19 @@ const styles = StyleSheet.create({
   }
 });
 
-const RepositoryInfo = ({ repository }) => (
-  <RepositoryItem displayButton={repository.id !== undefined} item={repository}/>
+const RepositoryHeader = ({ repository }) => (
+  <RepositoryItem displayButton={repository !== undefined} item={repository}/>
 );
 
 const ReviewItem = ({ review }) => {
-  if(!review) return null;
   const {
     text,
     rating,
-    user: { username },
     createdAt,
+    user,
   } = review;
-  // Single review item
+
+  const username = user ? user.username : '';
   const date = format(new Date(createdAt), "MM-dd-yyyy");
 
   return (
@@ -65,27 +64,40 @@ const ReviewItem = ({ review }) => {
   );
 };
 
-const SingleRepository = () => {
+const SingleRepositoryView = () => {
   const { id } = useParams();
-  const { data, loading } = useQuery(GET_ONE_REPOSITORY, {
-    fetchPolicy: 'cache-and-network',
-    variables: { id }
+  const { repository, loading, fetchMore } = useRepository({ 
+    id, 
+    first: 2
   });
 
-  const ItemSeparator = () => <View style={styles.separator} />;  
+  if (loading) return <Text>loading...</Text>;
+
+  const reviewNodes = repository
+    ? repository.reviews.edges.map(edge => edge.node)
+    : [];
+
+  if (reviewNodes) console.log(reviewNodes.map(u => u.user.username));
   
-  if (loading) return <Text>Loading</Text>;  
+  const onEndReach = () => {
+    console.log('You have reached the end of the list');
+    fetchMore();
+  }; 
+
+  const ItemSeparator = () => <View style={styles.separator} />;  
 
   return (
     <FlatList
-      data={data.repository.reviews.edges}
-      renderItem={({ item }) => <ReviewItem review={item.node} />}
+      data={reviewNodes}
+      renderItem={ node => <ReviewItem review={node.item} />}
       ItemSeparatorComponent={ItemSeparator}
-      keyExtractor={({ node }) => node.id}
-      ListHeaderComponent={() => <RepositoryInfo repository={data.repository} />}
+      keyExtractor={ node => node.id}
+      ListHeaderComponent={() => <RepositoryHeader repository={repository} />}
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.3}
       // ...
     />
   );
 };
 
-export default SingleRepository;
+export default SingleRepositoryView;

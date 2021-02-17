@@ -11,6 +11,9 @@ export const REPOSITORY_BASE_FIELDS = gql`
     ownerAvatarUrl
     description
     language
+    reviewCount
+    ratingAverage
+    createdAt
   }
 `;
 

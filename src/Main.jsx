@@ -1,35 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Route, Switch, Redirect } from 'react-router-native';
 
 import AppBar from './components/AppBar';  
 import RepositoryList from './components/RepositoryList';
-import SingleRepository from './components/SingleRepository';
+import SingleRepositoryView from './components/SingleRepositoryView';
 import SignIn from './components/SignInForm';
 import ReviewForm from './components/ReviewForm';
 import SignUpForm from './components/SignupForm';
-import useRepositories from './hooks/useRepositories';
+import UserReviews from './components/UserReviews';
  
 const styles = StyleSheet.create({ 
   container: {
     display:'flex',
-    backgroundColor: '#e1e4e8'
+    backgroundColor: '#e1e4e8',
   },
 });
 
 const Main = () => {
-  const [repositories, setRepositories] = useState(undefined);
-  const { repositories: initialRepos } = useRepositories({ orderBy: undefined , orderDirection: undefined });
-  
-  console.log({initialRepos});
-  if (repositories === undefined && initialRepos !== undefined) {
-    setRepositories(initialRepos);
-  }
-
-  console.log('main',{repositories});
   return (
     <View style={styles.container}>
-      <AppBar setRepositories={setRepositories}/>
+      <AppBar/>
       <Switch>
         <Route path="/sign-in">
           <SignIn />
@@ -40,11 +31,14 @@ const Main = () => {
         <Route path="/sign-up">
           <SignUpForm />
         </Route>
+        <Route path="/my-review">
+          <UserReviews />
+        </Route>
         <Route path="/:id">
-          <SingleRepository />
+          <SingleRepositoryView />
         </Route>
         <Route path="/" exact>
-          <RepositoryList repositories={repositories} />
+          <RepositoryList />
         </Route>
         <Redirect to="/" />
       </Switch>

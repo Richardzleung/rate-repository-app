@@ -10,7 +10,8 @@ const styles = StyleSheet.create({
   flexContainer: {
     backgroundColor: 'white',
     padding: 25,
-    marginBottom: 10
+    marginBottom: 10,
+    zIndex: -1
   },
   avatarContainer: {
     flexGrow: 0,
@@ -26,13 +27,15 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   languageText: {
+    color: 'white',
     backgroundColor: theme.colors.primary,
     borderRadius: theme.roundness,
     borderWidth: 1,
     borderColor: theme.colors.primary,
-    color: theme.colors.white,
+    flexGrow: 0,
     paddingVertical: 3,
-    paddingHorizontal: 6
+    paddingHorizontal: 6,
+    overflow: 'hidden'
   },
   footerBar: {
     flexDirection: 'row',
@@ -40,7 +43,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const RepositoryItem = ({ item, displayButton })  => {
+const RepositoryItem = ({ item, displayButton = null})  => {
   const {
     description,
     language,
