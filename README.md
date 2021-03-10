@@ -2,5 +2,4 @@
 
 Demo: 
 
-[![Demo](https://yt-embed.herokuapp.com/embed?v=Oiq2Bo6r2Dwg)]
-(//youtu.be/Oiq2Bo6r2Dw "Demo")
+[![Demo](http://img.youtube.com/vi/Oiq2Bo6r2Dw/0.jpg)](http://www.youtube.com/watch?v=Oiq2Bo6r2Dw)
