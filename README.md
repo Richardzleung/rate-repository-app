@@ -9,7 +9,6 @@ Built frontend for a pre-existing backend. The app is designed to allow users to
 [![Demo](http://img.youtube.com/vi/Oiq2Bo6r2Dw/0.jpg)](http://www.youtube.com/watch?v=Oiq2Bo6r2Dw)
 
 ## Frontend
-* CSS
 * React
 * React Native
 * React Native Paper
