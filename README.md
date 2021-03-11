@@ -1,4 +1,4 @@
-# rate-repository-app
+# Rate Repository app
 
 Built frontend for a pre-existing backend. The app is designed to allow users to rate and add comments about their favorite public GitHub repositories. 
 
